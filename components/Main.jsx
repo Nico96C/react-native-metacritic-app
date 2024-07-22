@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 
-import { StyleSheet, View, Image, Text, ScrollView } from "react-native";
+import { View, ActivityIndicator, FlatList } from "react-native";
 import { getLatestGames } from "../lib/metacritic";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Logo } from "../components/Logo";
+import { AnimatedGameCard } from "./GameCard.jsx";
 
 export function Main() {
   const [games, setGames] = useState([]);
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     getLatestGames().then((games) => {
@@ -13,44 +17,26 @@ export function Main() {
   }, []);
 
   return (
-    <>
-      <ScrollView>
-        {games.map((game) => (
-          <View key={game.slug} style={styles.card}>
-            <Image source={{ uri: game.image }} style={styles.image} />
-            <Text style={styles.title}> {game.title} </Text>
-            <Text style={styles.score}> {game.score} </Text>
-            <Text style={styles.description}> {game.description} </Text>
-          </View>
-        ))}
-      </ScrollView>
-    </>
+    <View
+      style={{
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+      }}
+    >
+      <View style={{ marginBottom: 10, marginTop: 5 }}>
+        <Logo />
+      </View>
+      {games.length === 0 ? (
+        <ActivityIndicator />
+      ) : (
+        <FlatList
+          data={games}
+          keyExtractor={(game) => game.slug}
+          renderItem={({ item, index }) => (
+            <AnimatedGameCard game={item} index={index} />
+          )}
+        />
+      )}
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  card: {
-    marginBottom: 42,
-  },
-  image: {
-    width: 107,
-    height: 147,
-    borderRadius: 10,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginTop: 10,
-    color: "#fff",
-  },
-  description: {
-    fontSize: 16,
-    color: "#eee",
-  },
-  score: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "green",
-    marginBottom: 10,
-  },
-});
