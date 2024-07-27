@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-
-import { View, ActivityIndicator, FlatList } from "react-native";
+import { Link } from "expo-router";
+import { View, ActivityIndicator, FlatList, StyleSheet } from "react-native";
 import { getLatestGames } from "../lib/metacritic";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Logo } from "../components/Logo";
@@ -23,9 +23,12 @@ export function Main() {
         paddingBottom: insets.bottom,
       }}
     >
-      <View style={{ marginBottom: 10, marginTop: 5 }}>
+      <View style={{ marginBottom: 7, marginTop: 5 }}>
         <Logo />
       </View>
+      <Link href="/about" style={styles.link}>
+        Ir al About
+      </Link>
       {games.length === 0 ? (
         <ActivityIndicator />
       ) : (
@@ -40,3 +43,9 @@ export function Main() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  link: {
+    color: "#60A5FA",
+  },
+});
