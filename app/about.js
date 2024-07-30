@@ -1,12 +1,15 @@
 /* eslint-disable prettier/prettier */
 import { Link } from "expo-router";
-import { ScrollView, StyleSheet, Text } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text } from "react-native";
+import { HomeIcon } from "../components/Icons";
 
 export default function About() {
   return (
-    <ScrollView>
-      <Link href="/" style={styles.link}>
-        Volver al Inicio
+    <ScrollView style={styles.link}>
+      <Link asChild href="/">
+        <Pressable>
+          {({ pressed }) => <HomeIcon style={{ opacity: pressed ? 0.5 : 1 }} />}
+        </Pressable>
       </Link>
 
       <Text style={styles.title}>Sobre el Proyecto</Text>
@@ -94,7 +97,6 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   link: {
-    color: "#60A5FA",
-    marginTop: 40,
+    paddingTop: 56,
   },
 });

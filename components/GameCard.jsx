@@ -1,19 +1,33 @@
 import { useEffect, useRef } from "react";
-import { StyleSheet, View, Image, Text, Animated } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Image,
+  Text,
+  Animated,
+  Pressable,
+} from "react-native";
 import { Score } from "./Score";
+import { Link } from "expo-router";
 
 export function GameCard({ game }) {
   return (
-    <View key={game.slug} style={styles.card}>
-      <Image source={{ uri: game.image }} style={styles.image} />
-      <View>
-        <Text style={styles.title}> {game.title} </Text>
-        <Score score={game.score} maxScore={100} />
-        <Text style={styles.description}>
-          {game.description.slice(0, 100)}...
-        </Text>
-      </View>
-    </View>
+    <Link href={`/${game.slug}`} asChild>
+      <Pressable>
+        {({ pressed }) => (
+          <View key={game.slug} style={pressed ? styles.card2 : styles.card}>
+            <Image source={{ uri: game.image }} style={styles.image} />
+            <View style={styles.contain}>
+              <Text style={styles.title}>{game.title}</Text>
+              <Score score={game.score} maxScore={100} />
+              <Text style={styles.description}>
+                {game.description.slice(0, 100)}...
+              </Text>
+            </View>
+          </View>
+        )}
+      </Pressable>
+    </Link>
   );
 }
 
@@ -38,11 +52,27 @@ export function AnimatedGameCard({ game, index }) {
 const styles = StyleSheet.create({
   card: {
     flexDirection: "row",
+    borderColor: "black",
+    borderWidth: 1,
     backgroundColor: "rgba(100, 116, 139, 0.25)",
     padding: 16,
     borderRadius: 12,
-    gap: 16,
-    marginBottom: 40,
+    gap: 12,
+    marginBottom: 12,
+    marginTop: 4,
+    marginHorizontal: 4,
+  },
+  card2: {
+    flexDirection: "row",
+    borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.5)",
+    backgroundColor: "rgba(100, 116, 139, 0.60)",
+    padding: 16,
+    borderRadius: 12,
+    gap: 12,
+    marginBottom: 12,
+    marginTop: 4,
+    marginHorizontal: 4,
   },
   image: {
     width: 107,
@@ -53,7 +83,6 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     fontSize: 20,
     fontWeight: "bold",
-    marginTop: 10,
     color: "#fff",
   },
   description: {
@@ -67,5 +96,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "green",
     marginBottom: 10,
+  },
+  contain: {
+    flexShrink: 1,
+    marginLeft: 8,
   },
 });
