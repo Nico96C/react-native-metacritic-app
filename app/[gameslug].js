@@ -6,15 +6,17 @@ import {
   StyleSheet,
   Text,
   View,
+  Image,
 } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { Screen } from "../components/Screen";
 import { useEffect, useState } from "react";
 import { getGameDetails } from "../lib/metacritic";
+import { Score } from "../components/Score";
 
 export default function Detail() {
   const { gameslug } = useLocalSearchParams();
-  const { gameInfo, setGameInfo } = useState(null);
+  const [gameInfo, setGameInfo] = useState(null);
 
   useEffect(() => {
     if (gameslug) {
@@ -29,16 +31,24 @@ export default function Detail() {
           headerStyle: { backgroundColor: "#ffee00" },
           headerTintColor: "black",
           headerLeft: () => {},
-          headerTitle: "The Legend of Zelda: Breath of the Wild",
+          headerTitle: gameInfo ? gameInfo.title : "Loading...",
           headerRight: () => {},
         }}
       />
-      <View>
+      <View style={styles.container}>
         {gameInfo === null ? (
           <ActivityIndicator color={"#fff"} size={"large"} />
         ) : (
           <ScrollView>
-            <Text style={styles.detail}> {gameslug} </Text>
+            <View style={styles.game}>
+              {gameInfo.img && (
+                <Image source={{ uri: gameInfo.img }} style={styles.imagen} />
+              )}
+              <Score score={gameInfo.score} maxScore={100} />
+              <Text style={styles.title}>{gameInfo.title}</Text>
+              <Text style={styles.detail}>{gameInfo.description}</Text>
+              
+            </View>
           </ScrollView>
         )}
       </View>
@@ -47,19 +57,38 @@ export default function Detail() {
 }
 
 const styles = StyleSheet.create({
-  box: {
+  container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "black",
+    padding: 16,
   },
   detail: {
-    color: "#ffffff",
-    fontWeight: "bold",
+    color: "white",
+    opacity: 0.7,
+    fontSize: 16,
     marginBottom: 32,
-    fontSize: 24,
+    textAlign: "left",
+    marginTop: 16,
   },
-  links: {
-    color: "#60A5FA",
+  score: {
+    color: "white",
+    fontSize: 14,
+    marginBottom: 16,
   },
+  imagen: {
+    marginBottom: 16,
+    borderRadius: 4,
+    width: 214,
+    height: 294,
+  },
+  game: {
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+  },
+  title: {
+    color: "white",
+    fontSize: 20,
+    textAlign: "center",
+    fontWeight: "bold",
+  }
 });
