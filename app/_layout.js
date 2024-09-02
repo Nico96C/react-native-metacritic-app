@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Link, Slot, Stack } from "expo-router";
+import { Link, Stack } from "expo-router";
 import { Pressable, StyleSheet, View } from "react-native";
 import { Logo } from "../components/Logo";
 import { CircleInfoIcon } from "../components/Icons";

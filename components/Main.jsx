@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { View, ActivityIndicator, FlatList, StyleSheet } from "react-native";
+import { ActivityIndicator, FlatList, StyleSheet } from "react-native";
 import { getLatestGames } from "../lib/metacritic";
 import { AnimatedGameCard } from "./GameCard.jsx";
 import { Screen } from "./Screen.jsx";
